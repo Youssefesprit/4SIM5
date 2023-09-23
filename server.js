@@ -37,12 +37,18 @@ const server = createServer((req, res) => {
       } 
 
       if (paths[0] === 'game' && paths[1] === 'select' && paths[2] !== '') {
-          console.log(paths[2]);
           var data_filter = jsonData.filter(e => e.Year > paths[2]);
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify(data_filter));
           return;
-      } 
+      }
+      if (paths[0] === 'game' && paths[1] !== '') {
+        var data_filter = jsonData.filter(e => e.Game == decodeURI(paths[1]) );
+        var game_url = data_filter.map(e => e.GameLink);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(game_url));
+        return;
+    } 
 
       res.writeHead(404);
       res.end('Not Found');
